@@ -4,6 +4,8 @@ import bodyParser from 'body-parser'
 import dotenv from 'dotenv'
 import swaggerUi from 'swagger-ui-express'
 import routes from './routes/index'
+// import swaggerOutput from './swagger-output.json'
+import { tokenValidationMiddleware } from './middleware'
 
 const app = express()
 
@@ -11,7 +13,8 @@ app.use(cors({
     credentials : true,
 }))
 app.use(bodyParser.json())
-// app.use("/" , routes)
+app.use(tokenValidationMiddleware)
+app.use("/" , routes())
 app.use("/api-docs" , swaggerUi.serve , swaggerUi.setup()) // It is placed inside the imported parentheses of the swagger-output.json file
 
 
@@ -22,6 +25,6 @@ app.listen(port , (err)=>{
     if (err) {
         console.log(err)
     }else{
-        console.log("Server is running")
+        console.log(`Server is running on port ${port}`)
     }
 })
