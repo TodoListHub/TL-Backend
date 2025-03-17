@@ -10,7 +10,7 @@ dotenv.config()
 const jwtSecret = process.env.JWT_SECRET || 'asfhdb36t3svvdcaqs1'
 
 export function generateJwtToken(userId: string):String{
-    const token = jwt.sign({ userId }, jwtSecret , { expiresIn: '1h' })
+    const token = jwt.sign({ userId }, jwtSecret , { expiresIn: '1h'})
     return token
 }
 

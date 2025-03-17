@@ -1,19 +1,19 @@
 import express from 'express'
 import cors from 'cors'
 import bodyParser from 'body-parser'
+import cookieParser from 'cookie-parser'
 import dotenv from 'dotenv'
 import swaggerUi from 'swagger-ui-express'
 import routes from './routes/index'
 // import swaggerOutput from './swagger-output.json'
-import { tokenValidationMiddleware } from './middleware'
 
 const app = express()
 
 app.use(cors({
     credentials : true,
 }))
+app.use(cookieParser())
 app.use(bodyParser.json())
-app.use(tokenValidationMiddleware)
 app.use("/" , routes())
 app.use("/api-docs" , swaggerUi.serve , swaggerUi.setup()) // It is placed inside the imported parentheses of the swagger-output.json file
 
