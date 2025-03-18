@@ -1,6 +1,9 @@
 import jwt from 'jsonwebtoken'
 import nodemailer from 'nodemailer'
+import dotenv from 'dotenv'
 
+
+dotenv.config()
 const JWT_SECRET = process.env.JWT_SECRET || 'asfhdb36t3svvdcaqs1'
 
 export async function sendResetPasswordEmail(userEmail:string , userId:number ) {
@@ -12,8 +15,8 @@ export async function sendResetPasswordEmail(userEmail:string , userId:number ) 
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'arabiamir2005@gmail.com',
-            pass: 'A1m3i8r40630476845',
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASSWORD,
         },
     })
 

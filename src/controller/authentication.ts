@@ -27,6 +27,37 @@ export async function signUp(req: express.Request, res: express.Response):Promis
     try{
 
         const { username, email, password } = req.body
+
+        if (!username || !password) {
+            return res.status(400).json({ message: "All fields are required"})
+        }
+
+        const foundUserByEmail = await prisma.user.findFirst({
+            where: { 
+                email : email
+            } , 
+            select: {
+                email: true
+            }
+        })
+
+        const foundUserByUsername = await prisma.user.findFirst({
+            where: {
+                username: username
+            },
+            select: {
+                username: true
+            }
+        })
+
+        if (foundUserByEmail) {
+            return res.status(400).json({ message: "User already exists"})
+        }
+
+        if (foundUserByUsername) {
+            return res.status(400).json({ message: "This name was created by another user"})
+        }
+
         const user = await prisma.user.create({
             data: {
                 username,
@@ -40,6 +71,7 @@ export async function signUp(req: express.Request, res: express.Response):Promis
         res.status(201).json({ message: "User create successfully" })
 
     }catch(error){
+        console.log(error)
         res.status(500).json({ message: 'Internal server error'})
     }
 }

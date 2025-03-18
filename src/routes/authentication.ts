@@ -1,12 +1,12 @@
 import express from 'express'
 import { PrismaClient } from '@prisma/client'
-import { signIn, signUp, status } from '../controller/authentication'
+import { resetPassword, signIn, signUp, status } from '../controller/authentication'
 import { tokenValidationMiddleware } from '../middleware/tokenValidationMiddleware'
 import { sendResetPasswordEmail } from '../helper/sendResetPasswordEmail'
 
 const prisma = new PrismaClient()
 export default (router : express.Router) =>{
-    router.get("/satus" , tokenValidationMiddleware , status)
+    router.get("/status" , tokenValidationMiddleware , status)
     router.post("/signUp" , signUp)
     router.post("/signIn" , tokenValidationMiddleware , signIn)
     router.get("/reset-password" , tokenValidationMiddleware , async(req:express.Request , res:express.Response):Promise<any> =>{
@@ -29,11 +29,12 @@ export default (router : express.Router) =>{
 
             res.status(200).json({ message: "Reset password email sent"})
         }catch(error){
+            console.log(error)
             res.status(500).json({ message: "Internal server error"})
             }
     })
 
-    router.post("/reset-password" , )
+    router.post("/reset-password" , resetPassword)
         
     
 }
