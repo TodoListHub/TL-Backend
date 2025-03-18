@@ -5,7 +5,8 @@ import cookieParser from 'cookie-parser'
 import dotenv from 'dotenv'
 import swaggerUi from 'swagger-ui-express'
 import routes from './routes/index'
-// import swaggerOutput from './swagger-output.json'
+import morgan from 'morgan'
+import swaggerOutput from '../swagger-output.json'
 
 const app = express()
 
@@ -14,8 +15,9 @@ app.use(cors({
 }))
 app.use(cookieParser())
 app.use(bodyParser.json())
+app.use(morgan("dev"))
 app.use("/" , routes())
-app.use("/api-docs" , swaggerUi.serve , swaggerUi.setup()) // It is placed inside the imported parentheses of the swagger-output.json file
+app.use("/api-docs" , swaggerUi.serve , swaggerUi.setup(swaggerOutput)) // It is placed inside the imported parentheses of the swagger-output.json file
 
 
 dotenv.config()

@@ -1,0 +1,14 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "My Api",
+    "description": "Api Description",
+    "version": "1.0.0"
+  },
+  "host": "localhost:4002",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {}
+}
