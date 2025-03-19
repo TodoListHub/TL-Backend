@@ -3,12 +3,13 @@ import { PrismaClient } from '@prisma/client'
 import { resetPassword, signIn, signUp, status } from '../controller/authentication'
 import { tokenValidationMiddleware } from '../middleware/tokenValidationMiddleware'
 import { sendResetPasswordEmail } from '../helper/sendResetPasswordEmail'
+import { SignUp , SignIn , ResetPass } from '../controller/authentication'
 
 const prisma = new PrismaClient()
 export default (router : express.Router) =>{
     router.get("/status" , tokenValidationMiddleware , status)
-    router.post("/signUp" , signUp)
-    router.post("/signIn" , tokenValidationMiddleware , signIn)
+    router.post("/signUp" , SignUp,  signUp)
+    router.post("/signIn" , tokenValidationMiddleware , SignIn , signIn)
     router.get("/reset-password" , tokenValidationMiddleware , async(req:express.Request , res:express.Response):Promise<any> =>{
         try{
 
@@ -34,7 +35,7 @@ export default (router : express.Router) =>{
             }
     })
 
-    router.post("/reset-password" , resetPassword)
+    router.post("/reset-password" , ResetPass , resetPassword)
         
     
 }
