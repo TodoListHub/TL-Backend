@@ -20,7 +20,7 @@ export async function sendResetPasswordEmail(userEmail:string , userId:number ) 
         },
     })
 
-    console.log(transporter)
+    console.log(process.env.EMAIL_USER , process.env.EMAIL_PASSWORD)
 
 
     await transporter.sendMail({
