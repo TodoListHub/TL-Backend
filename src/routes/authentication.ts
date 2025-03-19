@@ -1,5 +1,6 @@
 import express from 'express'
 import { PrismaClient } from '@prisma/client'
+import jwt from 'jsonwebtoken'
 import { resetPassword, signIn, signUp, status } from '../controller/authentication'
 import { tokenValidationMiddleware } from '../middleware/tokenValidationMiddleware'
 import { sendResetPasswordEmail } from '../helper/sendResetPasswordEmail'
@@ -25,7 +26,11 @@ export default (router : express.Router) =>{
                 return res.status(404).json({ message: "User not found"})
             }
 
-            await sendResetPasswordEmail(user.email , Number(req.userId))
+            const JWT_SECRET = process.env.JWT_SECRET || 'asfhdb36t3svvdcaqs1'
+
+            const token = jwt.sign({email: user.email}, JWT_SECRET, { expiresIn: '1h' })
+
+            await sendResetPasswordEmail(user.email)
 
             res.status(200).json({ message: "Reset password email sent"})
         }catch(error){
@@ -34,7 +39,7 @@ export default (router : express.Router) =>{
             }
     })
 
-    router.post("/reset-password" , ResetPass , resetPassword)
+    router.post("/reset-password" , tokenValidationMiddleware , ResetPass , resetPassword)
         
     
 }
