@@ -4,7 +4,6 @@ import { resetPassword, signIn, signUp, status } from '../controller/authenticat
 import { tokenValidationMiddleware } from '../middleware/tokenValidationMiddleware'
 import { sendResetPasswordEmail } from '../helper/sendResetPasswordEmail'
 import { SignUp , SignIn , ResetPass } from '../controller/authentication'
-
 const prisma = new PrismaClient()
 export default (router : express.Router) =>{
     router.get("/status" , tokenValidationMiddleware , status)
