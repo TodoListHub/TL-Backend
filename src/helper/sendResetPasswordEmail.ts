@@ -22,7 +22,7 @@ export async function sendResetPasswordEmail(userEmail:string , userId:number ) 
 
 
     await transporter.sendMail({
-        from: 'arabyamir1383@gmail.com',
+        from: 'arabiamir2005@gmail.com',
         to: userEmail,
         subject: 'Reset Password',
         text: `Click the following link to reset your password: ${resetLink}`,
