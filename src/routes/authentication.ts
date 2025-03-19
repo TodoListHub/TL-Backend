@@ -8,7 +8,7 @@ const prisma = new PrismaClient()
 export default (router : express.Router) =>{
     router.get("/status" , tokenValidationMiddleware , status)
     router.post("/signUp" , SignUp,  signUp)
-    router.post("/signIn" , tokenValidationMiddleware , SignIn , signIn)
+    router.post("/signIn", SignIn , signIn)
     router.get("/reset-password" , tokenValidationMiddleware , async(req:express.Request , res:express.Response):Promise<any> =>{
         try{
 
