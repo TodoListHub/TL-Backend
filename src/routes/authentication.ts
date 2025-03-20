@@ -17,6 +17,8 @@ export default (router : express.Router) =>{
     router.get("/reset-password" , async(req:express.Request , res:express.Response):Promise<any> =>{
         try{
 
+            console.log(req.userId)
+
             const user = await prisma.user.findUnique({
                 where: {
                     id: Number(req.userId)
