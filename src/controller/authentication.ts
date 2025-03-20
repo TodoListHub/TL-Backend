@@ -172,5 +172,11 @@ export async function resetPassword (req:express.Request , res: express.Response
         }
     })
 
+    if (!req.userId){
+        return res.status(401).json({ message: 'Invalid credentials' })
+    }
+    const token = generateJwtToken(req.userId)
+    res.cookie("token" , token , { httpOnly: true , expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) })
+
     res.status(200).json({ message: 'Password reset successful' })
 }

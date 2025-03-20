@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client'
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 import { resetPassword, signIn, signUp, status } from '../controller/authentication'
-import { tokenValidationMiddleware , authenticationMiddelware } from '../middleware/tokenValidationMiddleware'
+import { tokenValidationMiddleware} from '../middleware/tokenValidationMiddleware'
 import { sendResetPasswordEmail } from '../helper/sendResetPasswordEmail'
 import { SignUp , SignIn , ResetPass } from '../controller/authentication'
 const prisma = new PrismaClient()
@@ -37,7 +37,7 @@ export default (router : express.Router) =>{
 
             const token = jwt.sign({ userId: user.id }, jwtSecret, { expiresIn: '15m' })
 
-            res.header('Authorization', `Bearer ${token}`)
+            res.cookie("token" , token , { httpOnly: true , expires: new Date(Date.now() + 15 * 60 * 1000) })
             console.log(token)
             await sendResetPasswordEmail(user.email)
 
@@ -47,7 +47,7 @@ export default (router : express.Router) =>{
             res.status(500).json({ message: "Internal server error"})
             }
     })
-    router.post("/reset-password" , authenticationMiddelware , ResetPass , resetPassword)
+    router.post("/reset-password" , tokenValidationMiddleware , ResetPass , resetPassword)
         
     
 }
