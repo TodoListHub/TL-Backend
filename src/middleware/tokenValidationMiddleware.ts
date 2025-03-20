@@ -25,3 +25,17 @@ export async function tokenValidationMiddleware(req: express.Request, res: expre
         return res.status(401).json({ message: 'Invalid token' })
     }
 }
+
+export async function authenticationMiddelware(req : express.Request , res: express.Response , next: express.NextFunction):Promise<any> {
+    const authentication = req.headers['authorization']
+    if (!authentication) {
+        return res.status(401).json({ message: 'token is required' })
+    }
+
+    const token = authentication.split(' ')[1]
+    
+    if (!token) {
+        return res.status(401).json({ message: 'token is missing or invalid' })
+    }
+
+}

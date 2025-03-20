@@ -1,17 +1,17 @@
-import jwt from 'jsonwebtoken'
+// import jwt from 'jsonwebtoken'
 import nodemailer from 'nodemailer'
 import dotenv from 'dotenv'
 
 
 dotenv.config()
 
-const jwtSecret = process.env.JWT_SECRET || 'asfhdb36t3svvdcaqs1'
+// const jwtSecret = process.env.JWT_SECRET || 'asfhdb36t3svvdcaqs1'
 
-export async function sendResetPasswordEmail(userEmail:string , userId : number) {
+export async function sendResetPasswordEmail(userEmail:string) {
 
-    const token = jwt.sign({ userId }, jwtSecret , { expiresIn: '15m' })
+    // const token = jwt.sign({ userId }, jwtSecret , { expiresIn: '15m' })
 
-    const resetLink = `http://localhost:3000/reset-password?token=${token}`
+    const resetLink = `http://localhost:3000/reset-password`
 
 
     const transporter = nodemailer.createTransport({
@@ -21,8 +21,6 @@ export async function sendResetPasswordEmail(userEmail:string , userId : number)
             pass: process.env.EMAIL_PASSWORD,
         },
     })
-
-    console.log(process.env.EMAIL_USER , process.env.EMAIL_PASSWORD)
 
 
     await transporter.sendMail({

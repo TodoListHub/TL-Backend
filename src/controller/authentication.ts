@@ -157,21 +157,15 @@ export async function resetPassword (req:express.Request , res: express.Response
         return res.status(400).json({error : error.array()})
     }
 
-    const { token , newPassword } = req.body
+    const { newPassword } = req.body
 
-    if (!token || !newPassword) {
+    if (!newPassword) {
         return res.status(400).json({ message: 'Invalid request'})
-    }
-
-    const decoded = await validateJwtToken(token)
-
-    if (!decoded || decoded.userId !== req.userId) {
-        return res.status(401).json({ message: 'Invalid token' })
     }
 
     await prisma.user.update({
         where: {
-            id: decoded.userId
+            id: Number(req.userId)
         },
         data: {
             password: newPassword
