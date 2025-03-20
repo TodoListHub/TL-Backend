@@ -45,7 +45,7 @@ export async function validateJwtToken(token: string):Promise<any> {
         const decoded = jwt.verify(token, jwtSecret)
         return decoded
     } catch (error) {
-        throw new Error('Invalid token')
+        return error
     }
 }
 
@@ -164,6 +164,10 @@ export async function resetPassword (req:express.Request , res: express.Response
     }
 
     const decoded = await validateJwtToken(token)
+
+    if (!decoded || decoded.userId !== req.userId) {
+        return res.status(401).json({ message: 'Invalid token' })
+    }
 
     await prisma.user.update({
         where: {
