@@ -28,9 +28,9 @@ export async function tokenValidationMiddleware(req: express.Request, res: expre
 
 export async function authenticationMiddelware(req : express.Request , res: express.Response , next: express.NextFunction):Promise<any> {
     try{
-        console.log(req.headers)
         const authentication = req.headers['authorization']
         console.log(authentication)
+        
         if (!authentication) {
             return res.status(401).json({ message: 'token is required' })
         }

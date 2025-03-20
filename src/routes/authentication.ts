@@ -35,7 +35,7 @@ export default (router : express.Router) =>{
 
             const jwtSecret = process.env.JWT_SECRET || 'asfhdb36t3svvdcaqs1'
 
-            const token = jwt.sign({ userId: req.userId }, jwtSecret, { expiresIn: '15m' })
+            const token = jwt.sign({ userId: user.id }, jwtSecret, { expiresIn: '15m' })
 
             res.header('Authorization', `Bearer ${token}`)
             console.log(token)
