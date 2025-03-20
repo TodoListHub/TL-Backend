@@ -38,7 +38,7 @@ export default (router : express.Router) =>{
             const token = jwt.sign({ userId: req.userId }, jwtSecret, { expiresIn: '15m' })
 
             res.header('Authorization', `Bearer ${token}`)
-
+            console.log(token)
             await sendResetPasswordEmail(user.email)
 
             res.status(200).json({ message: "Reset password email sent"})
