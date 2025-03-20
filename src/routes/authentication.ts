@@ -17,15 +17,16 @@ export default (router : express.Router) =>{
     router.get("/reset-password" , async(req:express.Request , res:express.Response):Promise<any> =>{
         try{
 
-            console.log(req.userId)
+            const { email } = req.body
 
-            const user = await prisma.user.findUnique({
+            if (!email) {
+                return res.status(400).json({ message: "Email is required"})
+            }
+
+            const user = await prisma.user.findFirst({
                 where: {
-                    id: Number(req.userId)
+                    email: email
                 },
-                select: {
-                    email: true
-                }
             })
 
             if (!user || !user.email) {
@@ -46,7 +47,6 @@ export default (router : express.Router) =>{
             res.status(500).json({ message: "Internal server error"})
             }
     })
-
     router.post("/reset-password" , authenticationMiddelware , ResetPass , resetPassword)
         
     
