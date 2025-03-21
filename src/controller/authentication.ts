@@ -132,7 +132,7 @@ export async function signIn(req: express.Request, res: express.Response):Promis
         const token = generateJwtToken(user.id.toString())
         res.cookie("token" , token , { httpOnly: true , expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) })
         res.status(200).json({ message: 'Sign in successful'})
-    }else{
+    }else if (username && !email){
         console.log(username)
         const user = await prisma.user.findFirst({
             where: {
