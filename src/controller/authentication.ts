@@ -107,7 +107,7 @@ export async function signIn(req: express.Request, res: express.Response):Promis
         return res.status(400).json({error : error.array()})
     }
 
-    const { username ,  email , password } = req.body
+    const { username = "" ,  email = "" , password } = req.body
 
     if (!email && !username) {
         return res.status(400).json({ message: "All fields are required"})
