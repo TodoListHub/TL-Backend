@@ -114,11 +114,13 @@ export async function signIn(req: express.Request, res: express.Response):Promis
     }   
 
     if (email && !username){
+        console.log(email)
         const user = await prisma.user.findFirst({
             where: {
                 email,
             }
         })
+        console.log(user)
         if (!user) {
             return res.status(401).json({ message: 'Invalid credentials' })
         }
@@ -129,11 +131,13 @@ export async function signIn(req: express.Request, res: express.Response):Promis
         res.cookie("token" , token , { httpOnly: true , expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) })
         res.status(200).json({ message: 'Sign in successful'})
     }else{
+        console.log(username)
         const user = await prisma.user.findFirst({
             where: {
                 password ,
             }
         })
+        console.log(user)
         if (!user) {
             return res.status(401).json({ message: 'Invalid credentials' })
         }
