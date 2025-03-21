@@ -107,21 +107,43 @@ export async function signIn(req: express.Request, res: express.Response):Promis
         return res.status(400).json({error : error.array()})
     }
 
-    const { email , password } = req.body
-    const user = await prisma.user.findFirst({
-        where: {
-            email: email
+    const { username ,  email , password } = req.body
+
+    if (!email && !username) {
+        return res.status(400).json({ message: "All fields are required"})
+    }   
+
+    if (email && !username){
+        const user = await prisma.user.findFirst({
+            where: {
+                email,
+            }
+        })
+        if (!user) {
+            return res.status(401).json({ message: 'Invalid credentials' })
         }
-    })
-    if (!user) {
-        return res.status(401).json({ message: 'Invalid credentials' })
+        if (user.password !== password) {
+            return res.status(401).json({ message: 'Invalid credentials' })
+        }
+        const token = generateJwtToken(user.id.toString())
+        res.cookie("token" , token , { httpOnly: true , expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) })
+        res.status(200).json({ message: 'Sign in successful'})
+    }else{
+        const user = await prisma.user.findFirst({
+            where: {
+                password ,
+            }
+        })
+        if (!user) {
+            return res.status(401).json({ message: 'Invalid credentials' })
+        }
+        if (user.password !== password) {
+            return res.status(401).json({ message: 'Invalid credentials' })
+        }
+        const token = generateJwtToken(user.id.toString())
+        res.cookie("token" , token , { httpOnly: true , expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) })
+        res.status(200).json({ message: 'Sign in successful'})
     }
-    if (user.password !== password) {
-        return res.status(401).json({ message: 'Invalid credentials' })
-    }
-    const token = generateJwtToken(user.id.toString())
-    res.cookie("token" , token , { httpOnly: true , expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) })
-    res.status(200).json({ message: 'Sign in successful'})
 }
 
 export async function status(req:express.Request , res:express.Response):Promise<any> {
