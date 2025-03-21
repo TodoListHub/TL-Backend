@@ -102,6 +102,8 @@ export async function signUp(req: express.Request, res: express.Response):Promis
 
 export async function signIn(req: express.Request, res: express.Response):Promise<any>{
     
+    console.log(req.body)
+
     const error = validationResult(req)
     if (!error.isEmpty()){
         return res.status(400).json({error : error.array()})
