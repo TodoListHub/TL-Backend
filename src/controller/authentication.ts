@@ -24,6 +24,7 @@ export const SignUp = [
 export const SignIn = [
 
     body("email").isEmail().withMessage("Email format is not valid!"),
+    
 
     body("password").notEmpty().withMessage("Password is required")
     .isLength({min:8}).withMessage("The password must be at least 8 characters!")
