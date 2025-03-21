@@ -113,6 +113,8 @@ export async function signIn(req: express.Request, res: express.Response):Promis
         return res.status(400).json({ message: "All fields are required"})
     }   
 
+    
+
     if (email && !username){
         console.log(email)
         const user = await prisma.user.findFirst({
