@@ -22,9 +22,11 @@ export const SignUp = [
 ]
 
 export const SignIn = [
+    body("username").optional().notEmpty().withMessage("Username is required")
+    .isLength({min:5}).withMessage("The username must be at least 5 characters!")
+    .matches(/^[a-zA-Z0-9_]+$/).withMessage("The username can only include letters,numbers,and underlines!"),
 
-    body("email").isEmail().withMessage("Email format is not valid!"),
-    
+    body("email").optional().isEmail().withMessage("Email format is not valid!").normalizeEmail(),
 
     body("password").notEmpty().withMessage("Password is required")
     .isLength({min:8}).withMessage("The password must be at least 8 characters!")
