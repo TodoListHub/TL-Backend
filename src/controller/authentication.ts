@@ -1,4 +1,5 @@
 import express from 'express'
+import bcrypt from 'bcrypt'
 import { PrismaClient } from '@prisma/client'
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
@@ -90,11 +91,13 @@ export async function signIn(req: express.Request, res: express.Response):Promis
         return res.status(400).json({ message: "This name was created by another user"})
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10)
+
     const user = await prisma.user.create({
         data: {
             username,
             email,
-            password
+            password: hashedPassword
         }
     })
 
@@ -131,7 +134,10 @@ export async function logIn(req: express.Request, res: express.Response):Promise
         if (!user) {
             return res.status(401).json({ message: 'Invalid credentials' })
         }
-        if (user.password !== password) {
+
+        const inMatch = await bcrypt.compare(password, user.password)
+
+        if (!inMatch) {
             return res.status(401).json({ message: 'Invalid credentials' })
         }
         const token = generateJwtToken(user.id.toString())
