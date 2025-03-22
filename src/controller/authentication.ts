@@ -154,7 +154,10 @@ export async function logIn(req: express.Request, res: express.Response):Promise
         if (!user) {
             return res.status(401).json({ message: 'Invalid credentials' })
         }
-        if (user.password !== password) {
+
+        const inMatch = await bcrypt.compare(password, user.password)
+
+        if (!inMatch) {
             return res.status(401).json({ message: 'Invalid credentials' })
         }
         const token = generateJwtToken(user.id.toString())
