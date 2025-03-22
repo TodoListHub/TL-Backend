@@ -11,6 +11,7 @@ import swaggerOutput from '../swagger-output.json'
 const app = express()
 
 app.use(cors({
+    origin : "https://tl-front-eight.vercel.app",
     credentials : true,
 }))
 app.use(cookieParser())
