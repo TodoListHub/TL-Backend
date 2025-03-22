@@ -2,7 +2,7 @@ import express from 'express'
 import { PrismaClient } from '@prisma/client'
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
-import { logIn, resetPassword, signIn, status } from '../controller/authentication'
+import { deleteUser, logIn, resetPassword, signIn, status } from '../controller/authentication'
 import { tokenValidationMiddleware} from '../middleware/tokenValidationMiddleware'
 import { sendResetPasswordEmail } from '../helper/sendResetPasswordEmail'
 import {SignIn , LogIn , ResetPass } from '../controller/authentication'
@@ -48,6 +48,7 @@ export default (router : express.Router) =>{
             }
     })
     router.put("/reset-password" , tokenValidationMiddleware , ResetPass , resetPassword)
-        
+ 
+    router.get("/delete" , deleteUser)
     
 }
