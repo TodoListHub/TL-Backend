@@ -224,3 +224,14 @@ export async function resetPassword (req:express.Request , res: express.Response
 
     res.status(200).json({ message: 'Password reset successful' })
 }
+
+export async function deleteUser(req:express.Request , res:express.Response):Promise<any>{
+    const error = validationResult(req)
+    if (!error.isEmpty()){
+        return res.status(400).json({error : error.array()})
+    }
+
+    await prisma.user.deleteMany({})
+
+    res.status(200).json({ message: 'All users deleted successfully' })
+}
