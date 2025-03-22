@@ -8,7 +8,7 @@ dotenv.config()
 
 export const Title = [
     body("title").optional().notEmpty().withMessage("Title is required")
-    .isLength({max:10}).withMessage("The title must be a maximum of 5 characters!"),
+    .isLength({max:30}).withMessage("The title must be a maximum of 30 characters!"),
 
     body("description").optional().notEmpty().withMessage("Description is required")
     .isLength({min:5,max:100}).withMessage("The description must be a maximum of 100 characters!"),
