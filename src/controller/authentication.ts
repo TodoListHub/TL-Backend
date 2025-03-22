@@ -202,12 +202,14 @@ export async function resetPassword (req:express.Request , res: express.Response
         return res.status(400).json({ message: 'Invalid request'})
     }
 
+    const hashedPassword = await bcrypt.hash(newPassword, 10)
+
     await prisma.user.update({
         where: {
             id: Number(req.userId)
         },
         data: {
-            password: newPassword
+            password: hashedPassword
         }
     })
 
