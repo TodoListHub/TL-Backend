@@ -2,18 +2,18 @@ import express from 'express'
 import { PrismaClient } from '@prisma/client'
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
-import { resetPassword, signIn, signUp, status } from '../controller/authentication'
+import { logIn, resetPassword, signIn, status } from '../controller/authentication'
 import { tokenValidationMiddleware} from '../middleware/tokenValidationMiddleware'
 import { sendResetPasswordEmail } from '../helper/sendResetPasswordEmail'
-import { SignUp , SignIn , ResetPass } from '../controller/authentication'
+import {SignIn , LogIn , ResetPass } from '../controller/authentication'
 const prisma = new PrismaClient()
 
 dotenv.config()
 
 export default (router : express.Router) =>{
     router.get("/status" , tokenValidationMiddleware , status)
-    router.post("/signUp" , SignUp,  signUp)
-    router.post("/signIn", SignIn , signIn)
+    router.post("/signIn" , SignIn,  signIn)
+    router.post("/logIn", LogIn , logIn)
     router.get("/reset-password" , async(req:express.Request , res:express.Response):Promise<any> =>{
         try{
 

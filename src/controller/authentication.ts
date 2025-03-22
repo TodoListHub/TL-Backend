@@ -9,7 +9,7 @@ dotenv.config()
 
 const jwtSecret = process.env.JWT_SECRET || 'asfhdb36t3svvdcaqs1'
 
-export const SignUp = [
+export const SignIn = [
     body("username").notEmpty().withMessage("Username is required")
     .isLength({min:5}).withMessage("The username must be at least 5 characters!")
     .matches(/^[a-zA-Z0-9_]+$/).withMessage("The username can only include letters,numbers,and underlines!"),
@@ -21,7 +21,7 @@ export const SignUp = [
     .matches(/^[a-zA-z0-9]+$/).withMessage("The password can only include letters,numbers")
 ]
 
-export const SignIn = [
+export const LogIn = [
     body("username").optional().notEmpty().withMessage("Username is required")
     .isLength({min:5}).withMessage("The username must be at least 5 characters!")
     .matches(/^[a-zA-Z0-9_]+$/).withMessage("The username can only include letters,numbers,and underlines!"),
@@ -52,7 +52,7 @@ export async function validateJwtToken(token: string):Promise<any> {
     }
 }
 
-export async function signUp(req: express.Request, res: express.Response):Promise<any>{
+export async function signIn(req: express.Request, res: express.Response):Promise<any>{
     const error = validationResult(req)
     if (!error.isEmpty()){
         return res.status(400).json({error : error.array()})
@@ -103,7 +103,7 @@ export async function signUp(req: express.Request, res: express.Response):Promis
         res.status(201).json({ message: "User create successfully" })
 }
 
-export async function signIn(req: express.Request, res: express.Response):Promise<any>{
+export async function logIn(req: express.Request, res: express.Response):Promise<any>{
     
     console.log(req.body)
 
