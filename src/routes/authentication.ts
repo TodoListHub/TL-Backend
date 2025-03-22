@@ -14,7 +14,7 @@ export default (router : express.Router) =>{
     router.get("/status" , tokenValidationMiddleware , status)
     router.post("/signIn" , SignIn,  signIn)
     router.post("/logIn", LogIn , logIn)
-    router.post("/reset-password" , async(req:express.Request , res:express.Response):Promise<any> =>{
+    router.get("/reset-password" , async(req:express.Request , res:express.Response):Promise<any> =>{
         try{
 
             const { email } = req.body
