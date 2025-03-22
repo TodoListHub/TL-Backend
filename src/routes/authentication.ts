@@ -37,7 +37,7 @@ export default (router : express.Router) =>{
 
             const token = jwt.sign({ userId: user.id }, jwtSecret, { expiresIn: '15m' })
 
-            res.cookie("token" , token , { httpOnly: true , expires: new Date(Date.now() + 15 * 60 * 1000) })
+            res.cookie("token" , token , { httpOnly: true ,secure:true , sameSite: "none" , expires: new Date(Date.now() + 15 * 60 * 1000) })
             console.log(token)
             await sendResetPasswordEmail(user.email)
 

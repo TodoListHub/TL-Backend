@@ -102,7 +102,7 @@ export async function signIn(req: express.Request, res: express.Response):Promis
     })
 
         const token = generateJwtToken(user.id.toString())
-        res.cookie("token" , token , { httpOnly: true , expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) })
+        res.cookie("token" , token , { httpOnly: true ,secure:true , sameSite: "none" , expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) })
         res.status(201).json({ message: "User create successfully" , user })
 }
 
@@ -141,7 +141,7 @@ export async function logIn(req: express.Request, res: express.Response):Promise
             return res.status(401).json({ message: 'Invalid credentials' })
         }
         const token = generateJwtToken(user.id.toString())
-        res.cookie("token" , token , { httpOnly: true , expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) })
+        res.cookie("token" , token , { httpOnly: true ,secure:true , sameSite: "none" , expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) })
         res.status(200).json({ message: 'Login in successful'})
     }else if (username && !email){
         console.log(username)
@@ -161,7 +161,7 @@ export async function logIn(req: express.Request, res: express.Response):Promise
             return res.status(401).json({ message: 'Invalid credentials' })
         }
         const token = generateJwtToken(user.id.toString())
-        res.cookie("token" , token , { httpOnly: true , expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) })
+        res.cookie("token" , token , { httpOnly: true ,secure:true , sameSite: "none" , expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) })
         res.status(200).json({ message: 'Login in successful' , user})
     }
 }
@@ -220,7 +220,7 @@ export async function resetPassword (req:express.Request , res: express.Response
         return res.status(401).json({ message: 'Invalid credentials' })
     }
     const token = generateJwtToken(req.userId)
-    res.cookie("token" , token , { httpOnly: true , expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) })
+    res.cookie("token" , token , { httpOnly: true ,secure:true , sameSite: "none" , expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) })
 
     res.status(200).json({ message: 'Password reset successful' })
 }
