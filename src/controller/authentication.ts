@@ -231,8 +231,8 @@ export async function deleteUser(req:express.Request , res:express.Response):Pro
         return res.status(400).json({error : error.array()})
     }
 
-    await prisma.user.deleteMany({})
     await prisma.task.deleteMany({})
+    await prisma.user.deleteMany({})
 
     res.status(200).json({ message: 'All users deleted successfully' })
 }
