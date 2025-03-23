@@ -7,10 +7,10 @@ const doc = {
         description : "Api Description"
     },
     host : "localhost:4002",
-    schemes:  ["http"],
+    basePath : "./src/routes/index.ts",
 }
 
 const outputFile = "swagger-output.json"
-const endPointsFiles = ["./src/routes/index.ts"]
+const endPointsFiles = ["./src/routes/*.ts"]
 
 swaggerAutogen()(outputFile , endPointsFiles , doc)

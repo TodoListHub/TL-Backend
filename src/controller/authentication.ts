@@ -4,6 +4,7 @@ import { PrismaClient } from '@prisma/client'
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 const {body , validationResult} = require('express-validator')
+import { sendResetPasswordEmail } from '../helper/sendResetPasswordEmail'
 
 const prisma = new PrismaClient()
 dotenv.config()
@@ -32,6 +33,10 @@ export const LogIn = [
     body("password").notEmpty().withMessage("Password is required")
     .isLength({min:8}).withMessage("The password must be at least 8 characters!")
     .matches(/^[a-zA-z0-9]+$/).withMessage("The password can only include letters,numbers")
+]
+
+export const SendEmail = [
+    body("email").isEmail().withMessage("Email format is not valid!").normalizeEmail()
 ]
 
 export const ResetPass = [
@@ -190,6 +195,40 @@ export async function status(req:express.Request , res:express.Response):Promise
 
     res.status(200).json({ user })
     
+}
+
+export async function sendEmail(req:express.Request , res:express.Response):Promise<any>{
+
+    const error = validationResult(req)
+    if (!error.isEmpty()){
+        return res.status(400).json({error : error.array()})
+    }
+
+    const { email } = req.body
+
+    if (!email) {
+        return res.status(400).json({ message: "Email is required"})
+    }
+
+    const user = await prisma.user.findFirst({
+        where: {
+            email: email
+        },
+    })
+
+    if (!user || !user.email) {
+        return res.status(404).json({ message: "User not found"})
+    }
+
+    const jwtSecret = process.env.JWT_SECRET || 'asfhdb36t3svvdcaqs1'
+
+    const token = jwt.sign({ userId: user.id }, jwtSecret, { expiresIn: '15m' })
+
+    res.cookie("token" , token , { httpOnly: true ,secure:true , sameSite: "none" , expires: new Date(Date.now() + 15 * 60 * 1000) })
+    console.log(token)
+    await sendResetPasswordEmail(user.email)
+
+    res.status(200).json({ message: "Reset password email sent"})
 }
 
 export async function resetPassword (req:express.Request , res: express.Response) : Promise<any> {
