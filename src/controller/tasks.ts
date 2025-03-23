@@ -20,9 +20,9 @@ export async function createTask(req: express.Request, res: express.Response):Pr
         return res.status(400).json({error : error.array()})
     }
 
-    const { title, description } = req.body
+    const { title} = req.body
 
-    if (!title || !description) {
+    if (!title) {
         return res.status(400).json({ message: 'Invalid request' })
     }
 
