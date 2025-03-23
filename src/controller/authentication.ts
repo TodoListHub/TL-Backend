@@ -108,7 +108,7 @@ export async function signIn(req: express.Request, res: express.Response):Promis
 
         const token = generateJwtToken(user.id.toString())
         res.cookie("token" , token , { httpOnly: true ,secure:true , sameSite: "none" , expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) })
-        res.status(201).json({ message: "User create successfully" , user })
+        res.status(201).json({ message: "User create successfully"})
 }
 
 export async function logIn(req: express.Request, res: express.Response):Promise<any>{
@@ -167,7 +167,7 @@ export async function logIn(req: express.Request, res: express.Response):Promise
         }
         const token = generateJwtToken(user.id.toString())
         res.cookie("token" , token , { httpOnly: true ,secure:true , sameSite: "none" , expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) })
-        res.status(200).json({ message: 'Login in successful' , user})
+        res.status(200).json({ message: 'Login in successful'})
     }
 }
 
