@@ -29,7 +29,6 @@ model User {
 model Task {
   id Int @id @default(autoincrement())
   title String
-  description String
   status Status @default(NotStarted)
   user User @relation(fields: [userId], references: [id])
   userId Int

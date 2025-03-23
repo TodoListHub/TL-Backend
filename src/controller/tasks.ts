@@ -29,9 +29,8 @@ export async function createTask(req: express.Request, res: express.Response):Pr
     const task = await prisma.task.create({
         data: {
             title,
-            description,
             userId: Number(req.userId),
-            status : "TODO"
+            status : "NotStarted"
         }
     })
 
@@ -69,28 +68,68 @@ export async function updateTask(req:express.Request , res:express.Response):Pro
         return res.status(400).json({error : error.array()})
     }
 
-    const { title , description , status} = req.body
+    const taskId = Number(req.params.id)
 
-    if (!title || !description || !status) {
-        return res.status(400).json({ message: 'Nothing changed' })
-    }
-    
-    const updateTable = await prisma.task.update({
+    const task = await prisma.task.findUnique({
         where: {
-            id: Number(req.params.id)
-        },
-        data: {
-            title,
-            description,
-            status
+            id: taskId
         }
     })
 
-    if (!updateTable) {
-        return res.status(400).json({ message: 'Failed to update table' })
+    if (!task) {
+        return res.status(404).json({ message: 'Table not found' })
     }
 
-    return res.status(200).json({ message: 'Table updated successfully', updateTable })
+
+    if (!req.body){
+
+        if (task.status === "NotStarted"){
+            const updateTable = await prisma.task.update({
+                where: {
+                    id: Number(req.params.id)
+                },
+                data: {
+                    status : "TODO"
+                }
+            })
+        
+            if (!updateTable) {
+                return res.status(400).json({ message: 'Failed to update table' })
+            }
+
+            return res.status(200).json({ message: 'Table updated successfully', updateTable })
+        }else{
+            const updateTable = await prisma.task.update({
+                where: {
+                    id: Number(req.params.id)
+                },
+                data: {
+                    status : "NotStarted"
+                }
+            })
+
+            if (!updateTable) {
+                return res.status(400).json({ message: 'Failed to update table' })
+            }
+
+            return res.status(200).json({ message: 'Table updated successfully', updateTable })
+        }
+    }else if (req.body.title){
+        const updateTable = await prisma.task.update({
+            where: {
+                id: Number(req.params.id)
+            },
+            data: {
+                title: req.body.title
+            }
+        })
+
+        if (!updateTable) {
+            return res.status(400).json({ message: 'Failed to update table' })
+        }
+
+        return res.status(200).json({ message: 'Table updated successfully', updateTable })
+    }
 }
 
 export async function deleteTask(req: express.Request, res: express.Response):Promise<any>{
