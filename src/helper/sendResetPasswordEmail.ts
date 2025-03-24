@@ -19,13 +19,19 @@ export async function sendResetPasswordEmail(userEmail:string) {
         },
     })
 
+    try{
+        const info = await transporter.sendMail({
+            from: 'arabyamir1384@gmail.com',
+            to: userEmail,
+            subject: 'Reset Password',
+            text: `Click the following link to reset your password: ${resetLink}`,
+        });
 
-    await transporter.sendMail({
-        from: 'arabyamir1384@gmail.com',
-        to: userEmail,
-        subject: 'Reset Password',
-        text: `Click the following link to reset your password: ${resetLink}`,
-    });
+        console.log("email sent:" + info.response)
+        return { message: 'Reset password email sent' }
+    }catch(error){
+        console.log(error)
+        return { message: 'Failed to send reset password email' }
+    }
 
-    return { message: 'Reset password email sent' }
 }
