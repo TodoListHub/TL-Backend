@@ -29,12 +29,7 @@ model User {
 model Task {
   id Int @id @default(autoincrement())
   title String
-  status Status @default(NotStarted)
+  status Boolean @default(false)
   user User @relation(fields: [userId], references: [id])
   userId Int
-}
-
-enum Status {
-  TODO
-  NotStarted
 }

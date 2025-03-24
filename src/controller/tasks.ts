@@ -30,7 +30,6 @@ export async function createTask(req: express.Request, res: express.Response):Pr
         data: {
             title,
             userId: Number(req.userId),
-            status : "NotStarted"
         }
     })
 
@@ -82,13 +81,13 @@ export async function updateTask(req:express.Request , res:express.Response):Pro
 
     if (!req.body.title){
 
-        if (task.status === "NotStarted"){
+        if (task.status === false){
             const updateTable = await prisma.task.update({
                 where: {
                     id: Number(req.params.id)
                 },
                 data: {
-                    status : "TODO"
+                    status : true
                 }
             })
         
@@ -103,7 +102,7 @@ export async function updateTask(req:express.Request , res:express.Response):Pro
                     id: Number(req.params.id)
                 },
                 data: {
-                    status : "NotStarted"
+                    status : false
                 }
             })
 
