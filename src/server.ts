@@ -20,7 +20,7 @@ app.use(morgan("dev"))
 app.use("/" , routes())
 app.use("/api-docs" , swaggerUi.serve , swaggerUi.setup(swaggerOutput)) // It is placed inside the imported parentheses of the swagger-output.json file
 app.get("/api-docs.json" , (req , res)=>{
-    res.json(swaggerUi.generateHTML(swaggerOutput))
+    res.json(swaggerOutput)
 })
 
 dotenv.config()
