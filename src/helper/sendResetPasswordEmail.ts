@@ -21,7 +21,7 @@ export async function sendResetPasswordEmail(userEmail:string) {
 
 
     await transporter.sendMail({
-        from: 'arabiamir1384@gmail.com',
+        from: 'arabyamir1384@gmail.com',
         to: userEmail,
         subject: 'Reset Password',
         text: `Click the following link to reset your password: ${resetLink}`,
