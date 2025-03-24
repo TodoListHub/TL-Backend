@@ -7,4 +7,7 @@ export default (router : express.Router) => {
     router.get('/get-tasks', tokenValidationMiddleware , getTasks)
     router.put('/update-task/:id', tokenValidationMiddleware , Title , updateTask)
     router.delete('/delete-task/:id', tokenValidationMiddleware , deleteTask)
+    router.get("/home" , async (req: express.Request, res: express.Response) => {
+        res.send("Hello World")
+    })
 }
