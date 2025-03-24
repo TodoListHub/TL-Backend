@@ -28,6 +28,7 @@ export async function sendResetPasswordEmail(userEmail:string) {
         });
 
         console.log("email sent:" + info.response)
+        console.log(userEmail , typeof(userEmail))
         return { message: 'Reset password email sent' }
     }catch(error){
         console.log(error)
