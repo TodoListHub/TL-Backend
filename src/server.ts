@@ -10,7 +10,7 @@ import swaggerOutput from '../swagger-output.json'
 
 const app = express()
 
-const allowedOrigins = ['http://localhost:3000', 'https://tl-front-eight.vercel.app'];
+const allowedOrigins = ['http://localhost:3000', 'https://tl-front-eight.vercel.app/'];
 
 app.use(cors({
     origin: allowedOrigins,
