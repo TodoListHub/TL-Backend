@@ -8,10 +8,7 @@ dotenv.config()
 
 export const Title = [
     body("title").optional().notEmpty().withMessage("Title is required")
-    .isLength({max:30}).withMessage("The title must be a maximum of 30 characters!"),
-
-    body("description").optional().notEmpty().withMessage("Description is required")
-    .isLength({min:5,max:100}).withMessage("The description must be a maximum of 100 characters!"),
+    .isLength({min:2 ,max:150}).withMessage("The title must be a maximum of 30 characters!"),
 ]
 
 export async function createTask(req: express.Request, res: express.Response):Promise<any>{
