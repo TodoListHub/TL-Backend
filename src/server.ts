@@ -13,7 +13,7 @@ const app = express()
 const allowedOrigins = ['http://localhost:3000', 'https://tl-front-eight.vercel.app'];
 
 app.use(cors({
-    origin: "*" ,
+    origin: allowedOrigins,
     credentials: true,
   }));
 
