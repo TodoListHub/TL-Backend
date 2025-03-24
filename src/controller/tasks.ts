@@ -80,8 +80,7 @@ export async function updateTask(req:express.Request , res:express.Response):Pro
         return res.status(404).json({ message: 'Table not found' })
     }
 
-
-    if (!req.body){
+    if (!req.body.title){
 
         if (task.status === "NotStarted"){
             const updateTable = await prisma.task.update({
