@@ -12,7 +12,9 @@ declare global {
 
 export async function tokenValidationMiddleware(req: express.Request, res: express.Response, next:express.NextFunction):Promise<any>{
     try {
+        
         const token = req.cookies.token
+        console.log(token)
         if (!token) {
             return res.status(401).json({ message: 'token is required' })
         }
