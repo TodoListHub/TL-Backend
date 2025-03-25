@@ -137,7 +137,7 @@ export async function logIn(req: express.Request, res: express.Response):Promise
         })
         console.log(user)
         if (!user) {
-            return res.status(401).json({ message: 'Invalid credentials' })
+            return res.status(401).json({ message: '*Invalid credentials' })
         }
 
         const inMatch = await bcrypt.compare(password, user.password)
@@ -157,13 +157,13 @@ export async function logIn(req: express.Request, res: express.Response):Promise
         })
         console.log(user)
         if (!user) {
-            return res.status(401).json({ message: 'Invalid credentials' })
+            return res.status(401).json({ message: '+Invalid credentials' })
         }
 
         const inMatch = await bcrypt.compare(password, user.password)
 
         if (!inMatch) {
-            return res.status(401).json({ message: 'Invalid credentials' })
+            return res.status(401).json({ message: '-Invalid credentials' })
         }
         const token = generateJwtToken(user.id.toString())
         res.cookie("token" , token , { httpOnly: true ,secure:true , sameSite: "none" , expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) })
@@ -207,7 +207,7 @@ export async function status(req:express.Request , res:express.Response):Promise
             status: false
         }
     })
-    
+
     if (!user) {
         return res.status(404).json({ message: 'User not found' })
     }
