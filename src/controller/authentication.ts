@@ -207,11 +207,7 @@ export async function status(req:express.Request , res:express.Response):Promise
             status: false
         }
     })
-
-    if (!totalCount){
-        return res.status(404).json({message : "task status not found"})
-    }
-
+    
     if (!user) {
         return res.status(404).json({ message: 'User not found' })
     }
