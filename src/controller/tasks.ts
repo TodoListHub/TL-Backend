@@ -43,6 +43,8 @@ export async function getTasks(req: express.Request, res: express.Response):Prom
         return res.status(400).json({error : error.array()})
     }
 
+    console.log(req.userId)
+
     const tables = await prisma.task.findMany({
         where: {
             userId: Number(req.userId)
@@ -64,11 +66,10 @@ export async function updateTask(req:express.Request , res:express.Response):Pro
         return res.status(400).json({error : error.array()})
     }
 
-    const taskId = Number(req.params.id)
 
     const task = await prisma.task.findUnique({
         where: {
-            id: taskId
+            id: Number(req.params.id)
         }
     })
 
