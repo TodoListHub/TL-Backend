@@ -8,7 +8,7 @@ dotenv.config()
 export async function sendResetPasswordEmail(userEmail:string) {
 
 
-    const resetLink = `http://localhost:3000/reset-password`
+    const resetLink = `https://tl-front-eight.vercel.app/reset-password`
 
 
     const transporter = nodemailer.createTransport({
