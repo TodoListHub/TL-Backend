@@ -81,49 +81,67 @@ export async function updateTask(req:express.Request , res:express.Response):Pro
         return res.status(404).json({ message: 'Table not found' })
     }
 
-    if (!req.body.title){
-        console.log("true")
-        if (task.status === false){
-            console.log("false")
-            const updateTable = await prisma.task.update({
-                where: {
-                    id: Number(req.params.id)
-                },
-                data: {
-                    status : true
-                }
-            })
-        
-            if (!updateTable) {
-                return res.status(400).json({ message: 'Failed to update table' })
-            }
-
-            return res.status(200).json({ message: 'Table updated successfully', updateTable })
-        }else{
-
-            console.log("true")
-            const updateTable = await prisma.task.update({
-                where: {
-                    id: Number(req.params.id)
-                },
-                data: {
-                    status : false
-                }
-            })
-
-            if (!updateTable) {
-                return res.status(400).json({ message: 'Failed to update table' })
-            }
-
-            return res.status(200).json({ message: 'Table updated successfully', updateTable })
+    const updateTable = await prisma.task.update({
+        where: {
+            id: Number(req.params.id)
+        },
+        data: {
+            title: req.body.title
         }
-    }else if (req.body.title){
+    })
+
+    if (!updateTable) {
+        return res.status(400).json({ message: 'Failed to update table' })
+    }
+
+    return res.status(200).json({ message: 'Table updated successfully', updateTable })
+}
+
+
+export async function updateStatus(req:express.Request , res:express.Response):Promise<any>{
+    const error = validationResult(req)
+
+    if (!error.isEmpty()){
+        return res.status(400).json({error : error.array()})
+    }
+
+
+    const task = await prisma.task.findUnique({
+        where: {
+            id: Number(req.params.id)
+        }
+    })
+
+    console.log(task)
+
+    if (!task) {
+        return res.status(404).json({ message: 'Table not found' })
+    }
+
+    if (task.status === false){
+        console.log("false")
         const updateTable = await prisma.task.update({
             where: {
                 id: Number(req.params.id)
             },
             data: {
-                title: req.body.title
+                status : true
+            }
+        })
+    
+        if (!updateTable) {
+            return res.status(400).json({ message: 'Failed to update table' })
+        }
+
+        return res.status(200).json({ message: 'Table updated successfully', updateTable })
+    }else{
+
+        const updateTable = await prisma.task.update({
+            where: {
+                id: Number(req.params.id)
+            },
+            data: {
+                status : false
             }
         })
 
@@ -133,7 +151,9 @@ export async function updateTask(req:express.Request , res:express.Response):Pro
 
         return res.status(200).json({ message: 'Table updated successfully', updateTable })
     }
+
 }
+
 
 export async function deleteTask(req: express.Request, res: express.Response):Promise<any>{
     const error = validationResult(req)
