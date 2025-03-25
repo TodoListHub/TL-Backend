@@ -189,11 +189,34 @@ export async function status(req:express.Request , res:express.Response):Promise
         }
     })
 
+    const totalCount = await prisma.task.count({
+        where:{
+            userId : Number(userId)
+        }
+    })
+    const trueCount = await prisma.task.count({
+        where:{
+            userId : Number(userId),
+            status : true
+        }
+    })
+
+    const falseCount = await prisma.task.count({
+        where : {
+            userId : Number(userId),
+            status: false
+        }
+    })
+
+    if (!totalCount){
+        return res.status(404).json({message : "task status not found"})
+    }
+
     if (!user) {
         return res.status(404).json({ message: 'User not found' })
     }
 
-    res.status(200).json({ user })
+    res.status(200).json({ user , totalCount , trueCount , falseCount })
     
 }
 
