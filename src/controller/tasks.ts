@@ -105,6 +105,7 @@ export async function updateStatus(req:express.Request , res:express.Response):P
         return res.status(400).json({error : error.array()})
     }
 
+    
 
     const task = await prisma.task.findUnique({
         where: {
